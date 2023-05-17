@@ -7,4 +7,5 @@ Gradle- as a build automation tool
 Spring Boot- Java-based framework used to create a micro services and web apps  
 Java- programming language for coding   
 MySQL- for database  
-Git- for version control  
+Git- for version control   
+Postman- to verify API endpoints  
