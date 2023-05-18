@@ -33,13 +33,22 @@ public class StudentController {
     public Student updateStudent(@Validated @RequestBody Student student) {
     	return studentService.updateStudent(student);
     }
-    
+
+    //soft delete
     @DeleteMapping("delete/{id}")
     public boolean deleteById(@PathVariable(value = "id") long id) {
-    	return studentService.deleteById(id);
+        return studentService.deleteById(id);
     }
 
-    @DeleteMapping("/deleteAll")
-    public boolean deleteAllStudents(){return studentService.deleteAllStudents();}
+    //hard delete
+    @DeleteMapping("hardDelete/{id}")
+    public boolean hardDeleteById(@PathVariable(value = "id") long id) {
+    	return studentService.hardDeleteById(id);
+    }
+
+
+    //hard delete
+    @DeleteMapping("/hardDeleteAll")
+    public boolean hardDeleteAllStudents(){return studentService.hardDeleteAllStudents();}
     
 }

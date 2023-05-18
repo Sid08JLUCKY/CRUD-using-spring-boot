@@ -40,11 +40,18 @@ public class StudentService {
 	}
     
     public boolean deleteById(@PathVariable(value = "id") long id) {
-    	studentRepository.deleteById(id);
+		Student stud= studentRepository.getReferenceById(id);
+		stud.setIsDeleted(Boolean.TRUE);
+		studentRepository.save(stud);
     	return true;
     }
 
-	public boolean deleteAllStudents(){
+	public boolean hardDeleteById(@PathVariable(value = "id") long id) {
+		studentRepository.deleteById(id);
+		return true;
+	}
+
+	public boolean hardDeleteAllStudents(){
 		studentRepository.deleteAll();
 		return true;
 	}

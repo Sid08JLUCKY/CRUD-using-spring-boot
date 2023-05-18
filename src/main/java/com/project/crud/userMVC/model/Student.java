@@ -1,10 +1,12 @@
 package com.project.crud.userMVC.model;
 import org.hibernate.annotations.Table;
-//import org.springframework.data.annotation.Id;
 import jakarta.persistence.*;
+import org.hibernate.annotations.*;
 
 @Entity
 @Table(appliesTo="student")
+@SQLDelete(sql = "UPDATE student SET is_deleted=true WHERE id=?")
+@Where(clause = "is_deleted = false")
 public class Student{
 
 	@Id
@@ -15,6 +17,7 @@ public class Student{
 	private Integer age;
 	private String profileImg;
 	private Float cgpa;
+	private Boolean is_deleted=Boolean.FALSE;
 
 	public Student(){}
 
@@ -24,6 +27,7 @@ public class Student{
 		this.age=age;
 		this.profileImg=profileImg;
 		this.cgpa=cgpa;
+		this.is_deleted=Boolean.FALSE;
 	}
 	public void setName(String name) {
 		this.name=name;
@@ -37,7 +41,10 @@ public class Student{
 	public void setCgpa(Float cgpa) {
 		this.cgpa=cgpa;
 	}
-	
+
+	public void setIsDeleted(Boolean currentState){
+		this.is_deleted=currentState;
+	}
 
 	public long getId() {
 		return this.id;
@@ -54,6 +61,8 @@ public class Student{
 	public Float getCgpa() {
 		return this.cgpa;
 	}
+
+	public Boolean getIsDeleted(){return this.is_deleted;}
 	
 	
 }
