@@ -1,4 +1,5 @@
 package com.project.crud.userMVC.contoller;
+import com.project.crud.userMVC.constants.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,9 +14,13 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
-        
+
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
     @GetMapping
-    public List<Student> findAllStudents() {
+    public ResponseEntity<List<Student>> findAllStudents() {
         return studentService.findAllStudents();
     }
 
@@ -36,19 +41,34 @@ public class StudentController {
 
     //soft delete
     @DeleteMapping("soft/{id}")
-    public boolean deleteById(@PathVariable(value = "id") long id) {
-        return studentService.deleteById(id);
+    public String deleteById(@PathVariable(value = "id") long id) {
+        Boolean is_Delete=studentService.deleteById(id);
+        if(is_Delete){
+            return Constants.SUCCESS_SOFT_DELETED.getName();
+        }
+        return Constants.FAIL_SOFT_DELETED.getName();
     }
 
     //hard delete
     @DeleteMapping("hard/{id}")
-    public boolean hardDeleteById(@PathVariable(value = "id") long id) {
-    	return studentService.hardDeleteById(id);
+    public String hardDeleteById(@PathVariable(value = "id") long id) {
+
+        Boolean is_Delete=studentService.hardDeleteById(id);
+        if(is_Delete){
+            return Constants.SUCCESS_CURRENT_DELETED.getName();
+        }
+        return Constants.FAIL_CURRENT_DELETED.getName();
     }
 
 
     //hard delete
     @DeleteMapping
-    public boolean hardDeleteAllStudents(){return studentService.hardDeleteAllStudents();}
+    public String hardDeleteAllStudents(){
+        Boolean is_Deleted=studentService.hardDeleteAllStudents();
+        if(is_Deleted){
+            return Constants.SUCCESS_ALL_DELETED.getName();
+        }
+        return Constants.FAIL_ALL_DELETED.getName();
+    }
     
 }

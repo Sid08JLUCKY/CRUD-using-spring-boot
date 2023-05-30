@@ -16,10 +16,15 @@ public class StudentService {
 	public StudentService(StudentRepository studentRepository) {
 		this.studentRepository = studentRepository;
 	}
-
-	public List<Student> findAllStudents() {
-        return studentRepository.findAll();
-    }
+	public ResponseEntity<List<Student>> findAllStudents(){
+		List<Student>students=studentRepository.findAll();
+		System.out.println(students);
+		if(students.isEmpty()){
+			System.out.println(ResponseEntity.notFound().build());
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(students);
+	}
 
     public ResponseEntity<Student> findStudentById(@PathVariable(value = "id") long id) {
     	Optional<Student> stud= studentRepository.findById(id);
@@ -27,11 +32,13 @@ public class StudentService {
     }
 
     public Student saveStudent(@Validated @RequestBody Student student) {
-    	return studentRepository.save(student);
+
+		return studentRepository.save(student);
     }
     
     public Student updateStudent(@Validated @RequestBody Student student) {
     	Student stud= studentRepository.getReferenceById(student.getId());
+
 		stud.setName(student.getName());
 		stud.setAge(student.getAge());
 		stud.setCgpa(student.getCgpa());
@@ -39,20 +46,29 @@ public class StudentService {
 		return studentRepository.save(stud);
 	}
     
-    public boolean deleteById(@PathVariable(value = "id") long id) {
-		Student stud= studentRepository.getReferenceById(id);
+    public Boolean deleteById(@PathVariable(value = "id") long id) {
+		if(studentRepository.findById(id).isEmpty()){
+			return Boolean.FALSE;
+		}
+		Student stud=studentRepository.getReferenceById(id);
 		stud.setIs_deleted(Boolean.TRUE);
 		studentRepository.save(stud);
-    	return true;
+    	return Boolean.TRUE;
     }
 
-	public boolean hardDeleteById(@PathVariable(value = "id") long id) {
+	public Boolean hardDeleteById(@PathVariable(value = "id") long id) {
+		if(studentRepository.findById(id).isEmpty()){
+			return Boolean.FALSE;
+		}
 		studentRepository.deleteById(id);
-		return true;
+		return Boolean.TRUE;
 	}
 
-	public boolean hardDeleteAllStudents(){
+	public Boolean hardDeleteAllStudents(){
+		if(studentRepository.findAll().isEmpty()){
+			return Boolean.FALSE;
+		}
 		studentRepository.deleteAll();
-		return true;
+		return Boolean.TRUE;
 	}
 }
