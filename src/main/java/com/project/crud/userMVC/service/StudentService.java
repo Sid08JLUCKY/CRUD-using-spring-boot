@@ -41,7 +41,7 @@ public class StudentService {
     
     public boolean deleteById(@PathVariable(value = "id") long id) {
 		Student stud= studentRepository.getReferenceById(id);
-		stud.setIsDeleted(Boolean.TRUE);
+		stud.setIs_deleted(Boolean.TRUE);
 		studentRepository.save(stud);
     	return true;
     }

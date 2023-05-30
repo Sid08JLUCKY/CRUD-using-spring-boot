@@ -8,47 +8,47 @@ import com.project.crud.userMVC.service.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/student")
+@RequestMapping("/api/students")
 public class StudentController {
 
     @Autowired
     private StudentService studentService;
         
-    @GetMapping("/getAll")
+    @GetMapping
     public List<Student> findAllStudents() {
         return studentService.findAllStudents();
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Student> findStudentById(@PathVariable(value = "id") long id) {
     	return studentService.findStudentById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public Student saveStudent(@Validated @RequestBody Student student) {
     	return studentService.saveStudent(student);
     }
     
-    @PutMapping("/update")
+    @PutMapping
     public Student updateStudent(@Validated @RequestBody Student student) {
     	return studentService.updateStudent(student);
     }
 
     //soft delete
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("soft/{id}")
     public boolean deleteById(@PathVariable(value = "id") long id) {
         return studentService.deleteById(id);
     }
 
     //hard delete
-    @DeleteMapping("hardDelete/{id}")
+    @DeleteMapping("hard/{id}")
     public boolean hardDeleteById(@PathVariable(value = "id") long id) {
     	return studentService.hardDeleteById(id);
     }
 
 
     //hard delete
-    @DeleteMapping("/hardDeleteAll")
+    @DeleteMapping
     public boolean hardDeleteAllStudents(){return studentService.hardDeleteAllStudents();}
     
 }
